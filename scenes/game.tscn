@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://ce0kllg2shm22"]
+
+[ext_resource type="PackedScene" uid="uid://3lt7np1w05ol" path="res://scenes/floor.tscn" id="1_1iil6"]
+[ext_resource type="PackedScene" uid="uid://ccxa1vwival16" path="res://scenes/car.tscn" id="2_lkuuw"]
+
+[node name="Game" type="Node3D"]
+
+[node name="Floor" parent="." instance=ExtResource("1_1iil6")]
+
+[node name="Car" parent="." instance=ExtResource("2_lkuuw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.309752, 0.854964, -0.723723)
