@@ -1,45 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://ccxa1vwival16"]
+[gd_scene load_steps=10 format=3 uid="uid://ccxa1vwival16"]
 
 [ext_resource type="Script" path="res://scripts/car.gd" id="1_127pj"]
 [ext_resource type="Material" uid="uid://bphvgujitxspf" path="res://resources/textures/back_wheel.tres" id="2_crjf7"]
 [ext_resource type="Script" path="res://scripts/TopChaseCameraPivot.gd" id="2_ulep6"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jucgm"]
-bg_color = Color(0, 0, 0, 0.678431)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0, 0, 0, 1)
-border_blend = true
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mb3w0"]
-bg_color = Color(0.156863, 0.603922, 0.670588, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.8, 0.8, 0.8, 0)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4xi0m"]
-bg_color = Color(0.72549, 0.772549, 0.0392157, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.8, 0.8, 0.8, 0)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_se3s2"]
 points = PackedVector3Array(-0.77381, 0.297507, -1.52351, 0.73229, -0.25, 1.39684, -0.77381, 0.297507, 1.52351, 0.797465, 0.297619, -1.52351, -0.708481, -0.25, -1.39684, 0.73229, -0.25, -1.39684, -0.708481, -0.25, 1.39684, 0.797465, 0.297619, 1.52351)
@@ -78,48 +41,6 @@ rings = 1
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 center_of_mass_mode = 1
 script = ExtResource("1_127pj")
-
-[node name="UI" type="CanvasLayer" parent="."]
-
-[node name="Control" type="Control" parent="UI"]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 12.0
-offset_top = 16.0
-offset_right = 52.0
-offset_bottom = 56.0
-
-[node name="rpm_label" type="Label" parent="UI/Control"]
-offset_right = 35.0
-offset_bottom = 23.0
-text = "RPM"
-
-[node name="rpm_display" type="ProgressBar" parent="UI/Control/rpm_label"]
-unique_name_in_owner = true
-offset_left = 55.0
-offset_right = 221.0
-offset_bottom = 27.0
-theme_override_styles/background = SubResource("StyleBoxFlat_jucgm")
-theme_override_styles/fill = SubResource("StyleBoxFlat_mb3w0")
-value = 10.0
-show_percentage = false
-
-[node name="boost_label" type="Label" parent="UI/Control"]
-offset_top = 33.0
-offset_right = 45.0
-offset_bottom = 56.0
-text = "Boost
-"
-
-[node name="boost_display" type="ProgressBar" parent="UI/Control/boost_label"]
-unique_name_in_owner = true
-offset_left = 55.0
-offset_right = 221.0
-offset_bottom = 27.0
-theme_override_styles/background = SubResource("StyleBoxFlat_jucgm")
-theme_override_styles/fill = SubResource("StyleBoxFlat_4xi0m")
-value = 10.0
-show_percentage = false
 
 [node name="markers" type="Node3D" parent="."]
 
