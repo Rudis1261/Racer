@@ -20,6 +20,8 @@ extends VehicleBody3D
 @onready var rpm_display: ProgressBar = %rpm_display
 @onready var boost_display: ProgressBar = %boost_display
 
+@onready var flipped_ray: RayCast3D = %flipped_ray
+
 const MINI_CUBE = preload("res://scenes/mini_cube.tscn")
 const STEERING_RATE = 0.5
 const BRAKE_FORCE = 5
