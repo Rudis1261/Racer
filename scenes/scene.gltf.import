@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bwwfpcyjrrvqf"
-path="res://.godot/imported/Monster Truck.fbx-89d5fd7f02c2407bdad1668c07e0eb29.scn"
+uid="uid://b8f6wvnl1o6v2"
+path="res://.godot/imported/scene.gltf-2d4a9cfb14bb06541bfa60c396a93ae3.scn"
 
 [deps]
 
-source_file="res://assets/meshes/Monster Truck.fbx"
-dest_files=["res://.godot/imported/Monster Truck.fbx-89d5fd7f02c2407bdad1668c07e0eb29.scn"]
+source_file="res://scenes/scene.gltf"
+dest_files=["res://.godot/imported/scene.gltf-2d4a9cfb14bb06541bfa60c396a93ae3.scn"]
 
 [params]
 
