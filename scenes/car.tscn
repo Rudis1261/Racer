@@ -1,8 +1,14 @@
-[gd_scene load_steps=13 format=3 uid="uid://ccxa1vwival16"]
+[gd_scene load_steps=14 format=3 uid="uid://ccxa1vwival16"]
 
 [ext_resource type="Script" path="res://scripts/car.gd" id="1_127pj"]
 [ext_resource type="Material" uid="uid://bphvgujitxspf" path="res://resources/textures/back_wheel.tres" id="2_crjf7"]
 [ext_resource type="Script" path="res://scripts/TopChaseCameraPivot.gd" id="2_ulep6"]
+
+[sub_resource type="Curve" id="Curve_mlvlq"]
+max_value = 1000.0
+bake_resolution = 200
+_data = [Vector2(0, 1000), 0.0, 0.0, 0, 1, Vector2(0.678947, 1000), 0.0, -675.501, 1, 0, Vector2(1, 0), -5526.83, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jucgm"]
 bg_color = Color(0, 0, 0, 0.678431)
@@ -41,8 +47,8 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_se3s2"]
-points = PackedVector3Array(-0.77381, 0.297507, -1.52351, 0.73229, -0.25, 1.39684, -0.77381, 0.297507, 1.52351, 0.797465, 0.297619, -1.52351, -0.708481, -0.25, -1.39684, 0.73229, -0.25, -1.39684, -0.708481, -0.25, 1.39684, 0.797465, 0.297619, 1.52351)
+[sub_resource type="BoxShape3D" id="BoxShape3D_y8gj5"]
+size = Vector3(0.976135, 1.56433, 3.05182)
 
 [sub_resource type="BoxMesh" id="BoxMesh_8nf3m"]
 size = Vector3(1.5, 0.5, 3)
@@ -74,10 +80,19 @@ height = 0.25
 radial_segments = 12
 rings = 1
 
-[node name="Car" type="VehicleBody3D"]
+[node name="Car" type="VehicleBody3D" node_paths=PackedStringArray("car_body", "front_left_wheel_mesh", "front_right_wheel_mesh", "back_left_wheel_mesh", "back_right_wheel_mesh", "cg")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 center_of_mass_mode = 1
 script = ExtResource("1_127pj")
+car_body = NodePath("car_body")
+front_left_wheel_mesh = NodePath("front_left_wheel/front_left_wheel_mesh")
+front_right_wheel_mesh = NodePath("front_right_wheel/front_right_wheel_mesh")
+back_left_wheel_mesh = NodePath("back_left_wheel/back_left_wheel_mesh")
+back_right_wheel_mesh = NodePath("back_right_wheel/back_right_wheel_mesh")
+cg = NodePath("markers/CG")
+torque_curve = SubResource("Curve_mlvlq")
+drive = 1
+steering_rate = 0.6
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -89,37 +104,56 @@ offset_top = 16.0
 offset_right = 52.0
 offset_bottom = 56.0
 
-[node name="rpm_label" type="Label" parent="UI/Control"]
-offset_right = 35.0
-offset_bottom = 23.0
-text = "RPM"
-
-[node name="rpm_display" type="ProgressBar" parent="UI/Control/rpm_label"]
+[node name="speed_display" type="ProgressBar" parent="UI/Control"]
 unique_name_in_owner = true
-offset_left = 55.0
-offset_right = 221.0
-offset_bottom = 27.0
+layout_mode = 0
+offset_left = 11.0
+offset_top = 9.0
+offset_right = 177.0
+offset_bottom = 36.0
 theme_override_styles/background = SubResource("StyleBoxFlat_jucgm")
 theme_override_styles/fill = SubResource("StyleBoxFlat_mb3w0")
 value = 10.0
 show_percentage = false
 
-[node name="boost_label" type="Label" parent="UI/Control"]
-offset_top = 33.0
-offset_right = 45.0
-offset_bottom = 56.0
-text = "Boost
-"
-
-[node name="boost_display" type="ProgressBar" parent="UI/Control/boost_label"]
+[node name="current_speed" type="Label" parent="UI/Control"]
 unique_name_in_owner = true
-offset_left = 55.0
-offset_right = 221.0
-offset_bottom = 27.0
+layout_mode = 0
+offset_left = 46.0
+offset_top = 11.0
+offset_right = 89.0
+offset_bottom = 34.0
+text = "0"
+horizontal_alignment = 2
+
+[node name="km_h" type="Label" parent="UI/Control"]
+layout_mode = 0
+offset_left = 93.0
+offset_top = 11.0
+offset_right = 136.0
+offset_bottom = 34.0
+text = "km/h"
+
+[node name="boost_display" type="ProgressBar" parent="UI/Control"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 11.0
+offset_top = 42.0
+offset_right = 177.0
+offset_bottom = 69.0
 theme_override_styles/background = SubResource("StyleBoxFlat_jucgm")
 theme_override_styles/fill = SubResource("StyleBoxFlat_4xi0m")
 value = 10.0
 show_percentage = false
+
+[node name="boost_label" type="Label" parent="UI/Control"]
+layout_mode = 0
+offset_left = 73.0
+offset_top = 44.0
+offset_right = 118.0
+offset_bottom = 67.0
+text = "Boost
+"
 
 [node name="markers" type="Node3D" parent="."]
 
@@ -141,18 +175,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -0.4, -1)
 
 [node name="CG" type="Marker3D" parent="markers"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25855e-08, -0.129831, 0.372734)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.140507, 0)
 
-[node name="collision" type="CollisionShape3D" parent="."]
-shape = SubResource("ConvexPolygonShape3D_se3s2")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.37114e-08, -0.703356, 0, 1, -3.07447e-08, 0, 0, 0, 1, -0.00286866, 0.202423, 0.00253296)
+shape = SubResource("BoxShape3D_y8gj5")
 
 [node name="car_body" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
 mesh = SubResource("BoxMesh_8nf3m")
 
 [node name="terrain_ray" type="RayCast3D" parent="car_body"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.266147, 0)
-target_position = Vector3(0, -0.25, 0)
+target_position = Vector3(0, -0.6, 0)
 debug_shape_custom_color = Color(0.823529, 0.729412, 0, 1)
 
 [node name="flipped_ray" type="RayCast3D" parent="car_body"]
@@ -170,10 +206,12 @@ wheel_rest_length = 0.25
 wheel_friction_slip = 1.0
 suspension_travel = 0.4
 suspension_stiffness = 100.0
+suspension_max_force = 3000.0
 damping_compression = 1.9
 damping_relaxation = 2.0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="front_left_wheel"]
+[node name="front_left_wheel_mesh" type="MeshInstance3D" parent="front_left_wheel"]
+unique_name_in_owner = true
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("CylinderMesh_c3aow")
 
@@ -188,10 +226,12 @@ wheel_rest_length = 0.25
 wheel_friction_slip = 1.0
 suspension_travel = 0.4
 suspension_stiffness = 100.0
+suspension_max_force = 3000.0
 damping_compression = 1.9
 damping_relaxation = 2.0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="front_right_wheel"]
+[node name="front_right_wheel_mesh" type="MeshInstance3D" parent="front_right_wheel"]
+unique_name_in_owner = true
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("CylinderMesh_c3aow")
 
@@ -206,10 +246,12 @@ wheel_rest_length = 0.25
 wheel_friction_slip = 0.7
 suspension_travel = 0.4
 suspension_stiffness = 100.0
+suspension_max_force = 3000.0
 damping_compression = 1.9
 damping_relaxation = 2.0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="back_left_wheel"]
+[node name="back_left_wheel_mesh" type="MeshInstance3D" parent="back_left_wheel"]
+unique_name_in_owner = true
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("CylinderMesh_rwofj")
 
@@ -224,10 +266,12 @@ wheel_rest_length = 0.25
 wheel_friction_slip = 0.7
 suspension_travel = 0.4
 suspension_stiffness = 100.0
+suspension_max_force = 3000.0
 damping_compression = 1.9
 damping_relaxation = 2.0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="back_right_wheel"]
+[node name="back_right_wheel_mesh" type="MeshInstance3D" parent="back_right_wheel"]
+unique_name_in_owner = true
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("CylinderMesh_bqmvi")
 

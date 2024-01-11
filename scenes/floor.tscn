@@ -10,16 +10,17 @@ uv1_world_triplanar = true
 [sub_resource type="PlaneMesh" id="PlaneMesh_d3677"]
 material = SubResource("StandardMaterial3D_8p8gw")
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_nw5wg"]
-data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_8xfy6"]
+points = PackedVector3Array(-1, 0, -1, -1, 0, 1, 1, 0, -1, 1, 0, 1)
 
 [node name="Floor" type="Node3D" groups=["terrain"]]
 
-[node name="ground" type="MeshInstance3D" parent="."]
-transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(2000, 0, 0, 0, 2000, 0, 0, 0, 2000, 0, 0, 0)
+
+[node name="ground" type="MeshInstance3D" parent="StaticBody3D"]
 mesh = SubResource("PlaneMesh_d3677")
+skeleton = NodePath("../..")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="ground"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ground/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_nw5wg")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_8xfy6")

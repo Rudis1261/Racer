@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://c6ed2aqr52gaq"]
+[gd_scene load_steps=6 format=3 uid="uid://c6ed2aqr52gaq"]
 
 [ext_resource type="Script" path="res://scripts/mini_cube.gd" id="1_q237u"]
 
@@ -7,8 +7,38 @@ albedo_color = Color(0, 0, 0, 0.890196)
 
 [sub_resource type="BoxMesh" id="BoxMesh_pgnhy"]
 material = SubResource("StandardMaterial3D_58cbw")
-size = Vector3(0.1, 0.01, 0.1)
+size = Vector3(0.2, 0.01, 0.2)
+
+[sub_resource type="Animation" id="Animation_bhr3g"]
+resource_name = "fade_out"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:transparency")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 0.5),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oihhf"]
+_data = {
+"fade_out": SubResource("Animation_bhr3g")
+}
 
 [node name="mini_cube" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0072732, 2.38419e-07, -0.00397301)
 mesh = SubResource("BoxMesh_pgnhy")
 script = ExtResource("1_q237u")
+
+[node name="animation" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_oihhf")
+}
+
+[connection signal="animation_finished" from="animation" to="." method="_on_animation_animation_finished"]
